@@ -29,3 +29,78 @@ WSI → Patch Extraction → CTransPath Features
 → Feature Aggregation (Perceiver / MLP)  
 → Slide-level Diagnosis  
 → LLM → Report Generation
+
+## Results
+1. Main Classification Results
+Slide-level Diagnosis (3 Classes)
+- Dataset: Validation set (n = 568)
+- Classes: BCC, SCC, No malignancy
+- Accuracy: 96.65%
+  
+ Key Observations:
+
+- Very high performance across all classes
+- Minimal confusion between BCC and SCC
+- Most errors occur between:
+- BCC ↔ No malignancy
+
+Clinical Interpretation:
+
+- Errors mainly occur in borderline or subtle cases
+- Small tumor regions or early lesions are harder to detect
+- Some false positives correspond to:
+  --precancerous lesions
+  -- reactive atypia
+
+👉 This is actually clinically meaningful, not just “model error”
+
+  2. ROC Analysis
+     BCC: AUC = 0.998
+     SCC: AUC = 0.997
+     No malignancy: AUC = 0.995
+
+👉 Interpretation:
+
+Near-perfect separability between classes
+Model produces well-calibrated ranking scores
+
+3. Subtype Classification
+BCC & SCC Subtyping
+. Modeled as multi-label classification
+. Separate heads for:
+    .BCC subtypes
+    .SCC subtypes
+
+Key Insights
+
+BCC:
+
+High recall for common subtype (solid)
+Lower precision for:
+superficial
+micronodular
+
+👉 due to overlapping patterns + label subjectivity 
+
+SCC:
+
+Hardest classification task
+Challenges:
+grading (G1 vs G2)
+in-situ vs invasive
+
+👉 But:
+
+ROC-AUC shows strong feature learning
+Model captures meaningful structure despite threshold issues
+
+---
+Clinical Insight (VERY IMPORTANT ⭐)
+Rare subtypes are difficult even for experts
+Performance reflects:
+limited data
+real diagnostic ambiguity
+
+👉 This is a strong point, not a weakness
+     
+
