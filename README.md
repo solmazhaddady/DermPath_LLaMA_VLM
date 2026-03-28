@@ -258,7 +258,29 @@ A direct comparison of subtype classification between DermPath-LLaMA and HistoGP
 
 HistoGPT-M uses a broader and partially inconsistent set of subtype categories, while our approach focuses on a clinically curated subset with more controlled annotations. As a result, subtype-level comparisons would not be directly comparable or reliable.
 
-Instead, we focus on final diagnosis (BCC, SCC, No Malignancy), where label definitions are consistent across methods.
+### Subtype Comparison (BCC Only)
+
+We performed an additional comparison on BCC subtype prediction using HistoGPT-M.
+
+Since HistoGPT generates free-text reports, subtype labels were extracted from the "Critical findings" section and mapped to a canonical subtype vocabulary using a curated alias dictionary.
+
+* Evaluation set: n = 275 (BCC slides)
+* Metric: Top-1 agreement
+
+**Results:**
+
+* HistoGPT-M Top-1 Agreement: **54.5%**
+* Macro-F1: **0.167**
+* Micro-F1: **0.466**
+
+**Observation:**
+
+* Performance is limited, particularly for rare and ambiguous subtypes
+* Predictions are biased toward common patterns (e.g., solid subtype)
+
+**Note:**
+Due to differences in subtype definitions and multi-label ground truth, results should be interpreted with caution.
+
 
 ![Comparison with HistoGPT-M ](results/hgpt_bcc_top1_rownorm.png)
 
