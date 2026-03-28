@@ -248,7 +248,7 @@ These results highlight the importance of separating:
 
 A dedicated classification stage provides more stable and interpretable predictions, while the LLM can focus on generating clinically meaningful text.
 
-![Comparison with HistoGPT-M](HistoGPT_fd_confusion_rownorm_VAL.png)
+![ Comparison with HistoGPT-M ]( HistoGPT_fd_confusion_rownorm_VAL.png)
 
 ---
 ### Note on Subtype Comparison
