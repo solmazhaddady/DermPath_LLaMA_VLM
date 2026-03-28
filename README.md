@@ -89,7 +89,7 @@ Clinical Interpretation:
 
 ---
 
-2. ROC Analysis
+ 2. ROC Analysis
      
 . BCC: AUC = 0.998
    
@@ -107,7 +107,7 @@ Clinical Interpretation:
 
 ---
 
-3. Sub Type Classification 
+ 3. Sub Type Classification 
    
 . BCC & SCC Subtyping
 
@@ -161,6 +161,7 @@ Clinical Insight (VERY IMPORTANT ⭐)
 👉 This is a strong point, not a weakness
      
 ---
+
 ## Report Generation
 
 ### Example 1 — Basal Cell Carcinoma 
