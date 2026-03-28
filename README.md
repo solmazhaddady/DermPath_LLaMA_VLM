@@ -96,7 +96,7 @@ Key Insights
 👉 due to overlapping patterns + label subjectivity 
 
 
-###SCC:
+### SCC:
 
 . Hardest classification task
 
@@ -113,8 +113,11 @@ Key Insights
 Clinical Insight (VERY IMPORTANT ⭐)
 
 . Rare subtypes are difficult even for experts
+
 . Performance reflects:
+
   . limited data
+  
   . real diagnostic ambiguity
 
 👉 This is a strong point, not a weakness
