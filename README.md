@@ -248,9 +248,10 @@ These results highlight the importance of separating:
 
 A dedicated classification stage provides more stable and interpretable predictions, while the LLM can focus on generating clinically meaningful text.
 
-![ Comparison with HistoGPT-M ]( HistoGPT_fd_confusion_rownorm_VAL.png)
+![Comparison with HistoGPT-M ](results/HistoGPT_fd_confusion_rownorm_VAL.png)
 
 ---
+
 ### Note on Subtype Comparison
 
 A direct comparison of subtype classification between DermPath-LLaMA and HistoGPT-M is not included due to differences in label definitions and granularity.
@@ -258,6 +259,8 @@ A direct comparison of subtype classification between DermPath-LLaMA and HistoGP
 HistoGPT-M uses a broader and partially inconsistent set of subtype categories, while our approach focuses on a clinically curated subset with more controlled annotations. As a result, subtype-level comparisons would not be directly comparable or reliable.
 
 Instead, we focus on final diagnosis (BCC, SCC, No Malignancy), where label definitions are consistent across methods.
+
+
 
 
 
