@@ -72,7 +72,7 @@ Clinical Interpretation:
 
 . Model produces well-calibrated ranking scores
 
-![ROC Analysis](results/fd_roc_over_val.png)
+![ROC Analysis](results/fd_roc_ovr_val.png)
 
 ---
 
