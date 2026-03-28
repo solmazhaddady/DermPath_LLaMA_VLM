@@ -204,3 +204,48 @@ for rheumatoid arthritis.No evidence for lupus erythematosus.No evidence for scl
   * terminology normalization
   * uncertainty-aware generation
 
+---
+
+## Comparison with HistoGPT-M
+
+We compare our discriminative pipeline against the generative baseline HistoGPT-M on the same validation set (n = 568).
+
+Since HistoGPT-M produces free-text reports, the final diagnosis is extracted by parsing the generated text and mapping outputs into three classes: **BCC, SCC, and No Malignancy**. No additional fine-tuning was applied.
+
+### Quantitative Comparison
+
+| Model                     | Accuracy    | Macro-F1    |
+| ------------------------- | ----------- | ----------- |
+| **DermPath-LLaMA (Ours)** | **0.9665**  | **0.9515**  |
+| HistoGPT-M                | 0.8800      | 0.8400      |
+| **Improvement**           | **+0.0865** | **+0.1115** |
+
+### Key Findings
+
+* Our approach significantly outperforms HistoGPT-M on final diagnosis prediction
+* The two-stage design (classification → report generation) improves reliability
+* Explicit classification reduces ambiguity compared to text-based extraction
+
+### Error Analysis
+
+The performance gap can be explained by:
+
+* **Label extraction ambiguity:**
+  HistoGPT generates free-text reports, requiring post-hoc parsing to obtain a diagnosis
+
+* **Category mismatch:**
+  Collapsing fine-grained categories (e.g., precancerous lesions) into broader classes introduces inconsistencies
+
+* **Borderline cases:**
+  Differences between precancerous and malignant labels sometimes reflect clinical ambiguity rather than true model failure
+
+### Insight
+
+These results highlight the importance of separating:
+
+* **Diagnosis prediction (classification)**
+* **Report generation (LLM)**
+
+A dedicated classification stage provides more stable and interpretable predictions, while the LLM can focus on generating clinically meaningful text.
+
+![ Comparison with HistoGPT-M ](HistoGPT_fd_confusion_rownorm_val.png)
