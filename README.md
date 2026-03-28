@@ -72,7 +72,10 @@ Clinical Interpretation:
 
 . Model produces well-calibrated ranking scores
 
+![Roc Analysis](results/fd_roc_over_val.png)
+
 ---
+
 3. Subtype Classification
    
 . BCC & SCC Subtyping
