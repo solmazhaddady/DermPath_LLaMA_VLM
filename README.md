@@ -23,7 +23,7 @@ This project explores how vision–language models can address these challenges.
 - Applied parameter-efficient fine-tuning (LoRA) for large language models
 - Evaluated and compared performance with HistoGPT baseline
 
-  ## Pipeline
+## Pipeline
 
 WSI → Patch Extraction → CTransPath Features  
 → Feature Aggregation (Perceiver / MLP)  
@@ -107,7 +107,7 @@ Clinical Interpretation:
 
 ---
 
- 3. Sub Type Classification 
+3. Sub Type Classification 
    
 . BCC & SCC Subtyping
 
