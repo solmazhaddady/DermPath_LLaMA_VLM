@@ -63,30 +63,40 @@ Clinical Interpretation:
 👉 Interpretation:
 
 -Near-perfect separability between classes
+
 -Model produces well-calibrated ranking scores
+
 ---
 
 3. Subtype Classification
+   
 -BCC & SCC Subtyping
+
 . Modeled as multi-label classification
+
 . Separate heads for:
     .BCC subtypes
     .SCC subtypes
+    
+---
 
--Key Insights
+Key Insights
 
 ### BCC:
 
 -High recall for common subtype (solid)
+
 -Lower precision for:
   -superficial
    -micronodular
 
 👉 due to overlapping patterns + label subjectivity 
 
+
 ###SCC:
 
 -Hardest classification task
+
 -Challenges:
   -grading (G1 vs G2)
   -in-situ vs invasive
