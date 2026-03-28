@@ -54,6 +54,8 @@ Clinical Interpretation:
 
 👉 This is actually clinically meaningful, not just “model error”
 
+![Confusion Matrix](results/fd_confusion_rownorm_Valset.png)
+
 ---
 
 2. ROC Analysis
