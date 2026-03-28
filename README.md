@@ -260,6 +260,8 @@ HistoGPT-M uses a broader and partially inconsistent set of subtype categories, 
 
 Instead, we focus on final diagnosis (BCC, SCC, No Malignancy), where label definitions are consistent across methods.
 
+![Comparison with HistoGPT-M ](results/hgpt_bcc_top1_rownorm.png)
+
 
 
 
