@@ -57,8 +57,9 @@ The proposed approach follows a two-stage design:
 
 This design separates diagnosis prediction from report generation, improving robustness and interpretability.
 
+![Method Overview](figures/DermPath_LLaMA_Design_pipeline.png)
 
-
+---
 
 ## Results
 1. Main Classification Results
@@ -116,7 +117,7 @@ Clinical Interpretation:
     .BCC subtypes
     .SCC subtypes
     
----
+
 
 Key Insights
 
@@ -146,7 +147,7 @@ Key Insights
 
 ![Sub Type Classification ](results/cm_top_both_rowpct(subtypes).png)
 
----
+
 Clinical Insight (VERY IMPORTANT ⭐)
 
 . Rare subtypes are difficult even for experts
@@ -210,7 +211,7 @@ for rheumatoid arthritis.No evidence for lupus erythematosus.No evidence for scl
 * However, generates **overly long and generic differential statements**
 * Includes clinically irrelevant conditions → **over-generation issue**
 
----
+
 
 ### Key Observations
 
@@ -222,7 +223,7 @@ for rheumatoid arthritis.No evidence for lupus erythematosus.No evidence for scl
   * concise reporting
   * avoiding unnecessary clinical expansions
 
----
+
 
 ### Clinical Perspective
 
@@ -310,7 +311,6 @@ Since HistoGPT generates free-text reports, subtype labels were extracted from t
 
 **Note:**
 Due to differences in subtype definitions and multi-label ground truth, results should be interpreted with caution.
-
 
 ![Comparison with HistoGPT-M ](results/hgpt_bcc_top1_rownorm.png)
 
