@@ -129,4 +129,78 @@ Clinical Insight (VERY IMPORTANT ⭐)
 
 👉 This is a strong point, not a weakness
      
+---
+## Report Generation
+
+### Example 1 — Basal Cell Carcinoma 
+
+**Ground Truth:**
+“Ulcerated basal cell carcinoma, of the sclerodermiform histological type, on active pre-damaged skin.”
+
+**Generated (DermPath-LLaMA):**
+ “Basal cell carcinoma.Sclerodermiform, basal cell carcinoma, completely excided temporal right. The preparation margins are tumor-free. Adnexal findings: Actinic
+keratosis with mild atypia and a small melanocytic nevus in the area of the spindle tip at 6 o’clock.The latter is removed from the healthy side in the healthy. A biopsy of the skin without any evidence of mycobacterium tuberculosis infection. Ulcerated basal cell carcinoma, sclerodermiform type,completely removed on the whole (basal cell carcinoma).Adnexal findings: actinic keratosis, moderately differentiated with focal rim formation, completely removed on both sides in toto.Seborrhoic keratosis.”
+
+**Evaluation Metrics:**
+
+* Keyword overlap: 0.857
+* SciSpaCy entities: 0.5
+* Cosine similarity: 0.944
+* Perplexity: 23.44
+
+**Interpretation:**
+
+* Correct identification of **diagnosis (BCC)** and **subtype (sclerodermiform)**
+* Captures relevant pathological context (ulceration, actinic damage)
+* Tends to **expand with additional plausible findings** beyond the ground truth
+
+---
+
+### Example 2 — No Malignancy 
+
+**Ground Truth:**
+“Tumor-free resection (6 o’clock).”
+
+**Generated (DermPath-LLaMA):**
+“Skin/subcutaneous excised with lowgrade solar elastosis and scar area, without evidence of malignancy, especially no indication of possible residues of basal
+cell carcinoma. No melanoma residues detectable in the present material (minimal distance to lateral resection margin 0.6 mm).No evidence for amyloidosis.No
+evidence for granulomatous inflammation.No evidence for sarcoidosis.No evidence of vasculitis, e.g. Churg-Strauss syndrome or Wegener’s disease. No evidence
+for rheumatoid arthritis.No evidence for lupus erythematosus.No evidence for scleroderma.No evidence for foreign body reaction, especially no indication for siliconeinduced foreign body reaction.No evidence for actinic keratosis.”
+
+**Evaluation Metrics:**
+
+* Keyword overlap: 0.0
+* SciSpaCy entities: 0.0
+* Cosine similarity: 0.846
+* Perplexity: 9.34
+
+**Interpretation:**
+
+* Correctly predicts **absence of malignancy**
+* However, generates **overly long and generic differential statements**
+* Includes clinically irrelevant conditions → **over-generation issue**
+
+---
+
+### Key Observations
+
+* The model produces **coherent and medically plausible reports**
+* High semantic similarity even when wording differs significantly
+* Strong performance on **clear malignant cases**
+* Limitations in:
+
+  * concise reporting
+  * avoiding unnecessary clinical expansions
+
+---
+
+### Clinical Perspective
+
+* Suitable as a **drafting assistant** for pathologists
+* Requires **human validation and editing**
+* Future improvements:
+
+  * report length control
+  * terminology normalization
+  * uncertainty-aware generation
 
