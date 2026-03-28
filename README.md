@@ -53,6 +53,7 @@ Clinical Interpretation:
   -- reactive atypia
 
 👉 This is actually clinically meaningful, not just “model error”
+
 ---
 
 2. ROC Analysis
@@ -70,7 +71,6 @@ Clinical Interpretation:
 . Model produces well-calibrated ranking scores
 
 ---
-
 3. Subtype Classification
    
 . BCC & SCC Subtyping
