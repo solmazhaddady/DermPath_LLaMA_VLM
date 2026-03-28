@@ -75,7 +75,7 @@ Clinical Interpretation:
    
 . BCC & SCC Subtyping
 
-.  Modeled as multi-label classification
+. Modeled as multi-label classification
 
 . Separate heads for:
     .BCC subtypes
@@ -116,9 +116,9 @@ Clinical Insight (VERY IMPORTANT ⭐)
 
 . Performance reflects:
 
-  . limited data
+  .. limited data
   
-  . real diagnostic ambiguity
+  .. real diagnostic ambiguity
 
 👉 This is a strong point, not a weakness
      
