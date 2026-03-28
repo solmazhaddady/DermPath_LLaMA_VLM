@@ -30,6 +30,36 @@ WSI → Patch Extraction → CTransPath Features
 → Slide-level Diagnosis  
 → LLM → Report Generation
 
+---
+
+## Method Overview
+
+The proposed approach follows a two-stage design:
+
+1. **Feature Extraction**
+
+   * Whole-slide images are divided into patches
+   * Features are extracted using pretrained CTransPath encoder
+
+2. **Classification**
+
+   * Patch features are aggregated using:
+
+     * MLP
+     * Perceiver Resampler
+   * Slide-level diagnosis is predicted (BCC, SCC, No Malignancy)
+
+3. **Report Generation**
+
+   * Aggregated visual features are combined with predicted labels
+   * A medical LLM (MMed-LLaMA-3-8B) generates pathology reports
+   * Fine-tuned using LoRA for efficiency
+
+This design separates diagnosis prediction from report generation, improving robustness and interpretability.
+
+
+
+
 ## Results
 1. Main Classification Results
 Slide-level Diagnosis (3 Classes)
