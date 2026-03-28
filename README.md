@@ -72,11 +72,11 @@ Clinical Interpretation:
 
 . Model produces well-calibrated ranking scores
 
-![Roc Analysis](results/fd_roc_over_val.png)
+![ROC Analysis](results/fd_roc_over_val.png)
 
 ---
 
-3. Subtype Classification
+3. Sub Type Classification 
    
 . BCC & SCC Subtyping
 
@@ -113,6 +113,8 @@ Key Insights
 
 . ROC-AUC shows strong feature learning
 . Model captures meaningful structure despite threshold issues
+
+![Sub Type Classification ](results/cm_top_both_rowpct(subtypes).png)
 
 ---
 Clinical Insight (VERY IMPORTANT ⭐)
