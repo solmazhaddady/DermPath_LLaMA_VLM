@@ -89,7 +89,7 @@ Clinical Interpretation:
 
 ---
 
- 2. ROC Analysis
+2. ROC Analysis
      
 . BCC: AUC = 0.998
    
