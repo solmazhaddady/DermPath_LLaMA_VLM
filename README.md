@@ -33,7 +33,7 @@ WSI → Patch Extraction → CTransPath Features
 ## Results
 1. Main Classification Results
 Slide-level Diagnosis (3 Classes)
-- Dataset: Validation set (n = 568)
+- Dataset: Validation set (n = 568)   https://github.com/solmazhaddady/NMSC-TCIA-Dataset
 - Classes: BCC, SCC, No malignancy
 - Accuracy: 96.65%
   
