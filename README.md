@@ -53,53 +53,56 @@ Clinical Interpretation:
   -- reactive atypia
 
 👉 This is actually clinically meaningful, not just “model error”
+---
 
   2. ROC Analysis
-     BCC: AUC = 0.998
-     SCC: AUC = 0.997
-     No malignancy: AUC = 0.995
+     - BCC: AUC = 0.998
+     -SCC: AUC = 0.997
+     - No malignancy: AUC = 0.995
 
 👉 Interpretation:
 
-Near-perfect separability between classes
-Model produces well-calibrated ranking scores
+-Near-perfect separability between classes
+-Model produces well-calibrated ranking scores
+---
 
 3. Subtype Classification
-BCC & SCC Subtyping
+-BCC & SCC Subtyping
 . Modeled as multi-label classification
 . Separate heads for:
     .BCC subtypes
     .SCC subtypes
 
-Key Insights
+-Key Insights
 
-BCC:
+### BCC:
 
-High recall for common subtype (solid)
-Lower precision for:
-superficial
-micronodular
+-High recall for common subtype (solid)
+-Lower precision for:
+  -superficial
+   -micronodular
 
 👉 due to overlapping patterns + label subjectivity 
 
-SCC:
+###SCC:
 
-Hardest classification task
-Challenges:
-grading (G1 vs G2)
-in-situ vs invasive
+-Hardest classification task
+-Challenges:
+  -grading (G1 vs G2)
+  -in-situ vs invasive
 
 👉 But:
 
-ROC-AUC shows strong feature learning
-Model captures meaningful structure despite threshold issues
+-ROC-AUC shows strong feature learning
+-Model captures meaningful structure despite threshold issues
 
 ---
 Clinical Insight (VERY IMPORTANT ⭐)
-Rare subtypes are difficult even for experts
-Performance reflects:
-limited data
-real diagnostic ambiguity
+
+-Rare subtypes are difficult even for experts
+-Performance reflects:
+  -limited data
+  -real diagnostic ambiguity
 
 👉 This is a strong point, not a weakness
      
