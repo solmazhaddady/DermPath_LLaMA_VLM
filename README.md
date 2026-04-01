@@ -61,7 +61,7 @@ This design separates diagnosis prediction from report generation, improving rob
 
 ---
 
-### Feature Extraction
+1. ### Feature Extraction
 
 Whole-slide images are processed using a patch-based pipeline:
 
@@ -83,6 +83,7 @@ https://doi.org/10.1038/s41467-025-60014-x
 
 Code: https://github.com/marrlab/HistoGPT
 
+---
 
 ## Results
 1. Main Classification Results
