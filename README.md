@@ -61,7 +61,7 @@ This design separates diagnosis prediction from report generation, improving rob
 
 ---
 
-1. ### Feature Extraction
+###  1. Feature Extraction
 
 Whole-slide images are processed using a patch-based pipeline:
 
