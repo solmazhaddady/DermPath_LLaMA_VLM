@@ -61,6 +61,29 @@ This design separates diagnosis prediction from report generation, improving rob
 
 ---
 
+### Feature Extraction
+
+Whole-slide images are processed using a patch-based pipeline:
+
+* Downsampling of WSI (resolution-controlled)
+* Tessellation into non-overlapping patches (e.g., 256×256 or 512×512)
+* Background filtering using RGB thresholds and edge detection (Canny)
+* Resizing patches to 224×224
+* Normalization using ImageNet statistics
+
+Patch-level features are extracted using a pretrained CTransPath encoder and stored as slide-level embeddings (HDF5 format).
+
+**Implementation:**
+Adapted from the HistoGPT framework (Helmholtz Munich).
+
+**Reference:**
+Tran et al., *HistoGPT: Vision-language foundation model for histopathology*
+Published in Nature Communications
+https://doi.org/10.1038/s41467-025-60014-x
+
+Code: https://github.com/marrlab/HistoGPT
+
+
 ## Results
 1. Main Classification Results
 Slide-level Diagnosis (3 Classes)
