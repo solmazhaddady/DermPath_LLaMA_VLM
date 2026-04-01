@@ -18,7 +18,7 @@ This project explores how vision–language models can address these challenges.
 
 - Develped a two-stage vision–language pipeline for dermatopathology
 - Implemented Weakly supervised slide-level classification (MLP, Perceiver Resampler)
-- Leveraged pretrained CTransPath encoder for efficient WSI feature extraction
+- Integrated pretrained CTransPath encoder for WSI feature extraction (adapted from HistoGPT)
 - Integrated visual features with a medical LLM (MMed-LLaMA-3-8B) for report generation
 - Applied parameter-efficient fine-tuning (LoRA) for large language models
 - Evaluated and compared performance with HistoGPT baseline
@@ -77,10 +77,9 @@ Patch-level features are extracted using a pretrained CTransPath encoder and sto
 Adapted from the HistoGPT framework (Helmholtz Munich).
 
 **Reference:**
-Tran et al., *HistoGPT: Vision-language foundation model for histopathology*
+Tran et al. (2025) *Generating dermatopathology reports from gigapixel whole slide images with HistoGPT*
 Published in Nature Communications
 https://doi.org/10.1038/s41467-025-60014-x
-
 Code: https://github.com/marrlab/HistoGPT
 
 ---
