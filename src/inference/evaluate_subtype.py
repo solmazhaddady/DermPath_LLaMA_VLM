@@ -16,7 +16,7 @@ import torch.nn as nn
 from pathlib import Path
 from sklearn.metrics import f1_score
 
-from training.dataset_subtype import SubtypeDataset
+from training.train_subtype import SubtypeDataset
 from training.train_subtype import SubtypeClassifier
 
 
