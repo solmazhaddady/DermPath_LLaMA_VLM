@@ -1,6 +1,8 @@
-# ------------------------
-# Dataset
-# ------------------------
+'''
+Dataset
+Author: Solmaz Haddady
+Date : 03.04.2026
+'''
 class SlideClassificationDataset(Dataset):
     """
     Fast version: pre-index all .h5 files, then match rows by Image_Nr.
