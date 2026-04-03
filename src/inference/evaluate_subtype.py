@@ -16,8 +16,7 @@ import torch.nn as nn
 from pathlib import Path
 from sklearn.metrics import f1_score
 
-from training.subtype_dataset import  SlideCriticalMultiLabel
-from training.train_subtype import SubtypeClassifier
+from training.train_subtype import SubtypeClassifier, subtypedataset
 
 
 # ------------------------
