@@ -1,6 +1,9 @@
-# ------------------------
-# Model (perceiver + MLP)
-# ------------------------
+'''
+Model (perceiver + MLP)
+Author: Solmaz Haddady
+Date : 03.04.2026
+
+'''
 class PositionalEncoder(nn.Module):
     def __init__(self, input_dim=2, hidden_dim=128, output_dim=768):
         super().__init__()
