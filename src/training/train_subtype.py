@@ -117,7 +117,8 @@ def collate_fn(batch):
 
 
 # ------------------------
-# Model
+# Model 
+#same backbone as FD 
 # ------------------------
 class SubtypeClassifier(nn.Module):
     def __init__(self, num_bcc, num_scc):
