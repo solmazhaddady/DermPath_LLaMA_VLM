@@ -1,8 +1,14 @@
-'''  
-This script is for predicting label (final diagnosis ) for main diagnosis: Tumor_free, BCC, SCC
-Author :solmaz Haddady
-Date :03.04.2026
-'''
+
+"""
+Train Final Diagnosis Classifier (BCC, SCC, No Malignancy)
+
+This script trains a slide-level classifier using pre-extracted WSI features
+(CTransPath embeddings) and a Perceiver-based architecture.
+
+Author: Solmaz Haddady
+Date : 03.04.2026
+"""
+
 
 import os, math, json, random, h5py, argparse
 import numpy as np
@@ -12,7 +18,6 @@ from pathlib import Path
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import argparse
 from torch.utils.data import Dataset, DataLoader, random_split
 from torch.amp import autocast, GradScaler
 from training.dataset import SlideClassificationDataset
@@ -27,13 +32,16 @@ def parse_args():
     parser.add_argument("--csv_path", type=str, required=True)
     parser.add_argument("--h5_dirs", type=str, nargs="+", required=True)
     parser.add_argument("--save_path", type=str, required=True)
+    parser.add_argument("--batch_size" ,type=int , defult=1)
+    parser.add_argument("--epochs", type=int, default=10)
+    parser.add_argument("--lr", type=float, default=1e-4)
     return parser.parse_args()
 # ------------------------
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-BATCH_SIZE   = 1
-EPOCHS       = 10
-LR           = 1e-4
+
+#BATCH_SIZE   = 1
+#EPOCHS       = 10
+#LR           = 1e-4
 WEIGHT_DECAY = 0.1
 BETAS        = (0.9, 0.95)
 EPS          = 1e-8
@@ -143,6 +151,11 @@ if __name__ == "__main__":
     CSV_PATH = args.csv_path
     H5_DIRS = args.h5_dirs
     SAVE_PATH = args.save_path
+    BATCH_SIZE = args.batch_size
+    EPOCHS = args.epochs
+    LR = args.lr
+    print("Configuration:")
+    print(vars(args))
     main()
 
 
