@@ -135,7 +135,7 @@ The projected visual tokens are inserted into the LLM token stream
 at the <VISION_EMBEDDINGS> location, enabling causal attention 
 between visual and textual representations.
 
----
+
 Architecture
 
 * Frozen vision encoder (Stage-1)
@@ -148,11 +148,11 @@ Architecture
 Training (Stage-2A)
 The model is trained using masked language modeling:
 
-<INSTRUCTION>
-<FINAL_DIAGNOSIS>
-<CRITICAL_DIAGNOSIS>
-<VISION_EMBEDDINGS>
-<RESPONSE_MICROSCOPY>
+ <INSTRUCTION>
+ <FINAL_DIAGNOSIS>
+ <CRITICAL_DIAGNOSIS>
+ <VISION_EMBEDDINGS>
+ <RESPONSE_MICROSCOPY>
 
 Only <RESPONSE_MICROSCOPY> tokens contribute to loss.
 
@@ -167,6 +167,7 @@ Frozen components:
   * perceiver resampler
   * LLM backbone
     
+---
 
  VLM Report generation  * to be added *
  
