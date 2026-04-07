@@ -51,7 +51,7 @@ The proposed approach follows a two-stage design:
 
 3. **Report Generation**
 
-   * Aggregated visual features are combined with predicted labels
+   * Aggregated visual features are combined with predicted labels and medical report 
    * A medical LLM (MMed-LLaMA-3-8B) generates pathology reports
    * Fine-tuned using LoRA for efficiency
 
@@ -83,6 +83,48 @@ https://doi.org/10.1038/s41467-025-60014-x
 Code: https://github.com/marrlab/HistoGPT
 
 ---
+### 2. Classification   
+
+Patch-level features are aggregated into slide-level representations using a Perceiver-based architecture.
+
+Positional Encoding
+
+* Spatial coordinates of each tile are normalized to [0,1]
+* Coordinates (x,y) are projected to 768-dimensional embeddings using an MLP
+* This injects spatial context into patch-level visual features
+
+Perceiver Resampler
+
+* Position-aware features are compressed using a Perceiver Resampler
+* The variable-length patch sequence is mapped to a fixed number of latent tokens
+* Latent size: L = 640, dimension D = 1536
+* Cross-attention layers aggregate global slide-level context
+
+Slide-Level Classification
+
+* Latent tokens are mean-pooled to obtain a slide representation
+* A LayerNorm + Linear layer predicts final diagnosis:
+     - Basal Cell Carcinoma (BCC)
+     - Squamous Cell Carcinoma (SCC)
+     - No Malignancy
+
+#### Subtype Prediction
+
+* The same Perceiver backbone is reused
+* Two independent multi-label heads are attached:
+   - BCC subtype head
+   - SCC subtype head
+* Sigmoid activation enables multi-label prediction
+
+This design allows weakly supervised learning using only slide-level labels while capturing spatial context across gigapixel WSIs.
+
+Implementation details:
+See training/train_fd.py and models/perceiver.py 
+
+---
+
+## VLM desihn (* to be added * )
+
 
 ## Results
 1. Main Classification Results
