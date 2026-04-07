@@ -119,13 +119,59 @@ Slide-Level Classification
 This design allows weakly supervised learning using only slide-level labels while capturing spatial context across gigapixel WSIs.
 
 Implementation details:
-See training/train_fd.py and models/perceiver.py 
+See training/train_fd_classifier.py and models/perceiver.py 
 
 ---
 
-## VLM  (* to be added * )
+## Vision–Language Model VLM  (Stage-2A: Alignment)
+Stage 2 converts the slide-level visual encoder into a multimodal 
+vision–language model capable of generating microscopic descriptions.
 
+The frozen visual encoder from Stage 1 produces L=640 latent tokens 
+(dim=1536). These tokens are projected into the hidden space of a 
+causal medical LLM (4096) using a lightweight MLP projector.
 
+The projected visual tokens are inserted into the LLM token stream 
+at the <VISION_EMBEDDINGS> location, enabling causal attention 
+between visual and textual representations.
+
+---
+Architecture
+
+* Frozen vision encoder (Stage-1)
+* Perceiver Resampler (L=640, dim=1536)
+* Projector MLP (1536 → 4096)
+* MMed-LLaMA-3-8B backbone
+* LoRA adapters (rank=8)
+* causal next-token prediction
+
+Training (Stage-2A)
+The model is trained using masked language modeling:
+
+<INSTRUCTION>
+<FINAL_DIAGNOSIS>
+<CRITICAL_DIAGNOSIS>
+<VISION_EMBEDDINGS>
+<RESPONSE_MICROSCOPY>
+
+Only <RESPONSE_MICROSCOPY> tokens contribute to loss.
+
+Trainable components:
+
+  * projector MLP
+  * LoRA adapters
+
+Frozen components:
+
+  * vision encoder
+  * perceiver resampler
+  * LLM backbone
+    
+
+ VLM Report generation  * to be added *
+ 
+ ---
+ 
 ## Results
 1. Main Classification Results
 Slide-level Diagnosis (3 Classes)
