@@ -148,11 +148,11 @@ Architecture
 Training (Stage-2A)
 The model is trained using masked language modeling:
 
- <INSTRUCTION>
- <FINAL_DIAGNOSIS>
- <CRITICAL_DIAGNOSIS>
- <VISION_EMBEDDINGS>
- <RESPONSE_MICROSCOPY>
+- <INSTRUCTION>
+- <FINAL_DIAGNOSIS>
+- <CRITICAL_DIAGNOSIS>
+- <VISION_EMBEDDINGS>
+- <RESPONSE_MICROSCOPY>
 
 Only <RESPONSE_MICROSCOPY> tokens contribute to loss.
 
@@ -166,6 +166,10 @@ Frozen components:
   * vision encoder
   * perceiver resampler
   * LLM backbone
+
+For implementation details see:
+training/train_stage2_alignment.py
+models/vlm_projector.py
     
 ---
 
