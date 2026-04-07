@@ -123,7 +123,7 @@ See training/train_fd.py and models/perceiver.py
 
 ---
 
-## VLM desihn (* to be added * )
+## VLM  (* to be added * )
 
 
 ## Results
