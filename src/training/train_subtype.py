@@ -30,10 +30,31 @@ def parse_args():
     parser.add_argument("--h5_dirs", type=str, nargs="+", required=True)
     parser.add_argument("--save_path", type=str, required=True)
     parser.add_argument("--batch_size", type=int, default=1)
-    parser.add_argument("--epochs", type=int, default=10)
+    parser.add_argument("--epochs", type=int, default=20)
     return parser.parse_args()
 
+# ----------------------------
+# Hyperparams
+# ----------------------------
+SEED     = 1337
+BATCH    = 1
+EPOCHS   = 20
+LR       = 3e-4
+WD       = 0.01
+VAL_FRAC = 0.20
+NUM_WORKERS = 4
 
+# ----------------------------
+# Repro
+# ----------------------------
+def set_seed(seed=1337):
+    import random
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+
+set_seed(SEED)
 # ------------------------
 # Dataset
 # ------------------------
