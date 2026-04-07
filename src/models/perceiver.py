@@ -1,7 +1,7 @@
 '''
 Model (perceiver + MLP)
 Author: Solmaz Haddady
-Date : 03.04.2026
+
 
 '''
 class PositionalEncoder(nn.Module):
