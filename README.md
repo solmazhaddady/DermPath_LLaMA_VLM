@@ -147,7 +147,6 @@ Architecture
 
 Training (Stage-2A)
 The model is trained using masked language modeling:
-
 - <INSTRUCTION>
 - <FINAL_DIAGNOSIS>
 - <CRITICAL_DIAGNOSIS>
@@ -168,7 +167,9 @@ Frozen components:
   * LLM backbone
 
 For implementation details see:
+
 training/train_stage2_alignment.py
+
 models/vlm_projector.py
     
 ---
