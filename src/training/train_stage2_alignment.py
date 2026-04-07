@@ -13,7 +13,7 @@ from typing import Dict, Any, Tuple, List
 
 # ---------- Import  modules ----------
 # 
-from mm_modules import PositionalEncoderMLP, PerceiverResampler, Projector
+from models.vlm_projector import PositionalEncoderMLP, PerceiverResampler, Projector
 
 
 # ----------------- Utils -----------------
@@ -191,7 +191,7 @@ def build_lm(cfg, device):
     model.print_trainable_parameters()
     return tok, model
 
-########################## 
+
 
 # -------------- Forward (one batch) --------------
 def forward_batch(model, tok, batch, cfg, device, pos, resampler, projector):
