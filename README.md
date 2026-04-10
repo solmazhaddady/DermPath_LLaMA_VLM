@@ -178,18 +178,18 @@ The model is trained using masked causal language modeling, focusing only on gen
 
 Prompt Format:
 
-
-
--  <INSTRUCTION> Write the microscopic description for this case.</INSTRUCTION>
+-  <INSTRUCTION> Write the microscopic description for this case. </INSTRUCTION>
 - <FINAL_DIAGNOSIS> ... </FINAL_DIAGNOSIS>
 - <CRITICAL_DIAGNOSIS> ... </CRITICAL_DIAGNOSIS>
 -  <VISION_EMBEDDINGS>
 - <RESPONSE_MICROSCOPY> ... </RESPONSE_MICROSCOPY> 
 
 
-* Visual tokens are inserted at <VISION_EMBEDDINGS>
-* Only tokens inside <RESPONSE_MICROSCOPY> contribute to the loss
-* All other tokens are masked (-100)
+
+Visual tokens are inserted at <VISION_EMBEDDINGS>
+
+ Only tokens inside <RESPONSE_MICROSCOPY> contribute to the loss
+ All other tokens are masked (-100)
 
 Trainable vs Frozen components:
 
