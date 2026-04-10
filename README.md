@@ -188,7 +188,9 @@ Prompt Format:
 . Visual tokens are inserted at <VISION_EMBEDDINGS>
 
 . Only tokens inside <RESPONSE_MICROSCOPY> contribute to the loss
+
 . All other tokens are masked (-100)
+
 
 Trainable vs Frozen components:
 
