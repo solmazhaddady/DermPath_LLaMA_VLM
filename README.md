@@ -14,6 +14,9 @@ but several challenges remain:
 
 This project explores how vision–language models can address these challenges.
 
+## Dataset 
+https://github.com/solmazhaddady/NMSC-TCIA-Dataset
+
 ## Contributions
 
 - Develped a two-stage vision–language pipeline for dermatopathology
