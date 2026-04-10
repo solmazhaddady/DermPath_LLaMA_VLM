@@ -152,7 +152,8 @@ Architecture
 Training (Stage-2A)
 The model is trained using masked language modeling:
 
-- <INSTRUCTION>
+
+- < INSTRUCTION >
 - <FINAL_DIAGNOSIS>
 - <CRITICAL_DIAGNOSIS>
 - <VISION_EMBEDDINGS>
