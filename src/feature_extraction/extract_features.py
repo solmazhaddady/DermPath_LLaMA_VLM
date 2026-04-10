@@ -1,4 +1,4 @@
-"""
+""" 
 Feature extraction adapted from HistoGPT:
 https://github.com/marrlab/HistoGPT
  
@@ -8,6 +8,7 @@ Author: Valentin Koch / Helmholtz Munich
 Modifications:
 - adapted for DICOM/SVS slides
 - integrated into DermPath-LLaMA pipeline
+-Author :Solmaz Haddady
 """
 
 import cv2
@@ -33,7 +34,7 @@ import torchvision.transforms as T
 from dataclasses import dataclass, field
 from torch.utils.data import Dataset, DataLoader
 
-from models.ctranspath import ConvStem, swin_tiny_patch4_window7_224
+from ctranspath import ConvStem, swin_tiny_patch4_window7_224
 
 
 @dataclass
@@ -48,7 +49,7 @@ class PatchingConfigs:
     slide_path: str = 'PATH'
     save_path: str = 'PATH'
     model_path: str = 'PATH'
-    file_extension: str = '.ndpi'
+    file_extension: str = '.DCM'
 
     save_patch_images: bool = False
     save_tile_preview: bool = False
