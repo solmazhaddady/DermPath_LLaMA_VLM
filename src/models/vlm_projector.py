@@ -1,9 +1,10 @@
-'''
+"""
+Model : MLP + Perceiver + Projector 
 ----------  Projector: 1536 -> 4096 (LLM hidden) ----------
 This module is used in Stage-2 to project vision latents to LLM hidden size.
 Author :Solmaz Haddday 
 
-'''
+"""
 
 import torch
 import torch.nn as nn
