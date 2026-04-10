@@ -32,7 +32,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader, random_split
 from torch.amp import autocast, GradScaler
-from datasets.dataset import SlideClassificationDataset
+from datasets.slide_dataset import SlideClassificationDataset
 from training.utils import collate_pad, seed_all
 from models.perceiver import PerceiverResamplerClassifier
 
