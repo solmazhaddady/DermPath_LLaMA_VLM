@@ -1,5 +1,5 @@
 """
-Train Subtype Classifier (BCC / SCC Multi-Label)
+Train Subtype Classifier, (Critical Diagnosis)(BCC / SCC Multi-Label)
 
 This script trains a slide-level multi-label classifier for BCC and SCC
 histopathology subtypes using pre-extracted WSI patch features 
