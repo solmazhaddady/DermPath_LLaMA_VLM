@@ -116,6 +116,7 @@ Perceiver Resampler
      - Basal Cell Carcinoma (BCC)
      - Squamous Cell Carcinoma (SCC)
      - No Malignancy
+       
 *Cross-entropy loss is used for training.*
 
 #### Subtype Prediction 
