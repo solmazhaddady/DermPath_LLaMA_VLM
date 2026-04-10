@@ -30,7 +30,7 @@ from torch.utils.data import Dataset, DataLoader, random_split
 from sklearn.metrics import f1_score
 
 from models.perceiver import PerceiverResampler
-from datasets.subtype_dataset import 
+from datasets.subtype_dataset import SubtypeDataset
 
 
 # ------------------------
