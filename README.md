@@ -34,7 +34,7 @@ WSI → Patch Extraction → CTransPath Features
 
 ## Method Overview
 
-The proposed approach follows a two-stage design:
+The proposed approach follows a two-stage design: stage 1 performs slide level classification , stage 2 generate medical report 
 
 1. **Feature Extraction**
 
