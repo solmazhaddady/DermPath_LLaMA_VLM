@@ -166,7 +166,7 @@ The model is trained using masked language modeling:
 
 - < INSTRUCTION >
 - <FINAL_DIAGNOSIS>
-- <CRITICAL_DIAGNOSIS>
+- <SUBTYPE_DIAGNOSIS>
 - <VISION_EMBEDDINGS>
 - <RESPONSE_MICROSCOPY>
 
