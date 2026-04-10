@@ -37,7 +37,7 @@ WSI → Patch Extraction → CTransPath Features
 
 ## Method Overview
 
-The proposed approach follows a two-stage design: stage 1 performs slide level classification , stage 2 generate medical report 
+The proposed approach follows a two-stage design: stage 1 performs slide-level classification, while stage 2 generate medical reports using a vision-language model.
 
 1. **Feature Extraction**
 
@@ -51,7 +51,7 @@ The proposed approach follows a two-stage design: stage 1 performs slide level c
      * MLP
      * Perceiver Resampler
    * Slide-level diagnosis is predicted final diagnosis (basal cell carcinoma (BCC), squamous cell carcinoma (SCC), No Malignancy)
-   * Slide- level diagnosis is predicted critical (subtype cancer) diagnosis : solid,micronodular,superficial,grade1, grade2 ,......
+   * Subtype-level diagnosis is predicted for BCC and SCC using multi-label classification heads.
 
 3. **Report Generation**  VLM model  (*stage 2*) 
 
@@ -76,9 +76,11 @@ Whole-slide images are processed using a patch-based pipeline:
 * Normalization using ImageNet statistics
 
 Patch-level features are extracted using a pretrained CTransPath encoder and stored as slide-level embeddings (HDF5 format).
+details :  feature_extraction/extract_features.py
 
 **Implementation:**
 Adapted from the HistoGPT framework (Helmholtz Munich).
+
 
 **Reference:**
 Tran et al. (2025) *Generating dermatopathology reports from gigapixel whole slide images with HistoGPT*
@@ -95,35 +97,41 @@ Positional Encoding
 
 * Spatial coordinates of each tile are normalized to [0,1]
 * Coordinates (x,y) are projected to 768-dimensional embeddings using an MLP
-* This injects spatial context into patch-level visual features
+* The positionmal embeddings are added to CTransPath visual features
+* This injects spatial context into patch-level representations
 
 Perceiver Resampler
 
 * Position-aware features are compressed using a Perceiver Resampler
 * The variable-length patch sequence is mapped to a fixed number of latent tokens
-* Latent size: L = 640, dimension D = 1536
+* Number of Latents: L = 640, Latent dimension : D = 1536
 * Cross-attention layers aggregate global slide-level context
 
-Slide-Level Classification
+#### Slide-Level Classification * final diagnosis *
 
 * Latent tokens are mean-pooled to obtain a slide representation
 * A LayerNorm + Linear layer predicts final diagnosis:
+* Classes :
      - Basal Cell Carcinoma (BCC)
      - Squamous Cell Carcinoma (SCC)
      - No Malignancy
+*Cross-entropy loss is used for training.*
 
-#### Subtype Prediction
+#### Subtype Prediction 
 
-* The same Perceiver backbone is reused
+* to predict cancer subtype, the same Perceiver backbone is reused.
 * Two independent multi-label heads are attached:
    - BCC subtype head
    - SCC subtype head
-* Sigmoid activation enables multi-label prediction
+* Each heads predicts multiple subtype labels using sigmoid activation.
+* Binary cross-entropy loss (BCEWithLogitsLoss) is used for multi-label training.
 
-This design allows weakly supervised learning using only slide-level labels while capturing spatial context across gigapixel WSIs.
+This design enables weakly supervised learning using only slide-level labels while capturing spatial context across gigapixel WSIs.
 
-Implementation details:
-See models/perceiver.py , and  training/train_fd_classifier.py  and training/train_subtype_classifier.py
+For additional implementation details, please refer to the training scripts and model definitions.
+
+Model architecture : models/perceiver.py 
+Classification training scripts :  training/train_fd_classifier.py , training/train_subtype_classifier.py
 
 ---
 
