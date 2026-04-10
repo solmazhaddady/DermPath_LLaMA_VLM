@@ -179,7 +179,8 @@ The model is trained using masked causal language modeling, focusing only on gen
 Prompt Format:
 
 
-* <INSTRUCTION> Write the microscopic description for this case.</INSTRUCTION>
+
+*  <INSTRUCTION> Write the microscopic description for this case.</INSTRUCTION>
 * <FINAL_DIAGNOSIS> ... </FINAL_DIAGNOSIS>
 * <CRITICAL_DIAGNOSIS> ... </CRITICAL_DIAGNOSIS>
 * <VISION_EMBEDDINGS>
