@@ -1,8 +1,19 @@
 """
-Train Subtype Classifier (BCC / SCC multi-label)
+Train Subtype Classifier (BCC / SCC Multi-Label)
 
-This script trains a multi-label classifier for histopathology subtypes
-using pre-extracted WSI features (CTransPath embeddings).
+This script trains a slide-level multi-label classifier for BCC and SCC
+histopathology subtypes using pre-extracted WSI patch features 
+(CTransPath embeddings). Patch features are aggregated using a shared 
+Perceiver backbone, followed by two independent multi-label heads.
+
+Architecture:
+- Positional MLP for spatial encoding
+- Perceiver Resampler backbone (shared)
+- BCC multi-label classification head
+- SCC multi-label classification head
+
+Loss:
+- BCEWithLogitsLoss (multi-label)
 
 Author: Solmaz Haddady
 """
