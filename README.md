@@ -44,7 +44,7 @@ The proposed approach follows a two-stage design: stage 1 performs slide level c
    * Whole-slide images are divided into patches
    * Features are extracted using pretrained CTransPath encoder
 
-2. **Classification**  (stage 1) 
+2. **Classification**  (*stage 1*) 
 
    * Patch features are aggregated using:
 
@@ -53,7 +53,7 @@ The proposed approach follows a two-stage design: stage 1 performs slide level c
    * Slide-level diagnosis is predicted final diagnosis (basal cell carcinoma (BCC), squamous cell carcinoma (SCC), No Malignancy)
    * Slide- level diagnosis is predicted critical (subtype cancer) diagnosis : solid,micronodular,superficial,grade1, grade2 ,......
 
-3. **Report Generation**  (stage 2) 
+3. **Report Generation**  (*stage 2*) 
 
    * Aggregated visual features are combined with predicted labels and medical report 
    * A medical LLM (MMed-LLaMA-3-8B) generates pathology reports
