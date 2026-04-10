@@ -76,6 +76,7 @@ Whole-slide images are processed using a patch-based pipeline:
 * Normalization using ImageNet statistics
 
 Patch-level features are extracted using a pretrained CTransPath encoder and stored as slide-level embeddings (HDF5 format).
+
 details :  feature_extraction/extract_features.py
 
 **Implementation:**
@@ -130,8 +131,9 @@ This design enables weakly supervised learning using only slide-level labels whi
 
 For additional implementation details, please refer to the training scripts and model definitions.
 
-Model architecture : models/perceiver.py 
-Classification training scripts :  training/train_fd_classifier.py , training/train_subtype_classifier.py
+-Model architecture : models/perceiver.py 
+
+-Classification training scripts : training/train_fd_classifier.py , training/train_subtype_classifier.py
 
 ---
 
