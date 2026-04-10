@@ -138,56 +138,79 @@ For additional implementation details, please refer to the training scripts and 
 
 ---
 
-## Vision–Language Model VLM  (Stage-2A: Alignment)
-Stage 2 converts the slide-level visual encoder into a multimodal 
-vision–language model capable of generating microscopic descriptions.
+## Vision–Language Model (Stage-2A: Alignment)
 
-The frozen visual encoder from Stage 1 produces L=640 latent tokens 
-(dim=1536). These tokens are projected into the hidden space of a 
-causal medical LLM (4096) using a lightweight MLP projector.
+Stage 2 extends the slide-level visual encoder into a multimodal Vision–Language Model (VLM) capable of generating microscopic pathology descriptions.
 
-The projected visual tokens are inserted into the LLM token stream 
-at the <VISION_EMBEDDINGS> location, enabling causal attention 
-between visual and textual representations.
+In this stage, the goal is vision–language alignment: learning how visual representations from whole-slide images correspond to textual descriptions in pathology reports.
 
+Overview
+
+The frozen visual encoder from Stage 1 produces a fixed set of latent latent tokens 
+L=[640,1536]. These visual tokens are projected into the hidden space of a 
+causal medical LLM (4096 dimensions) using a lightweight Projector MLP.
+
+The projected visual tokens are then inserted into the LLM token at the special token <VISION_EMBEDDINGS> location,
+this enables joint attention between visual and textual tokens during next-token prediction.
 
 Architecture
 
-* Frozen vision encoder (Stage-1)
-* Perceiver Resampler (L=640, dim=1536)
-* Projector MLP (1536 → 4096)
-* MMed-LLaMA-3-8B backbone
-* LoRA adapters (rank=8)
-* causal next-token prediction
+The model consists of the following components:
 
-Training (Stage-2A)
-The model is trained using masked language modeling:
+* Frozen Visual Encoder (Stage 1)
+    * Positional MLP
+    *  Perceiver Resampler (L = 640, D = 1536)
+* Projector MLP
+    * Maps visual tokens: 1536 → 4096
+* Language Model
+   * MMed-LLaMA-3-8B (causal LLM)
+* LoRA Adapters
+    * Rank = 8
+    * Applied to attention layers (q, k, v, o)
+* Fusion Mechanism
+    * Visual tokens are injected into the LLM token stream
+    * Enables multimodal reasoning via causal attention
+ 
+  
+Training (Stage 2-A: Alignment)
+
+The model is trained using masked causal language modeling, focusing only on generating the microscopy description.
+
+Prompt Format:
 
 
-- < INSTRUCTION >
-- <FINAL_DIAGNOSIS>
-- <SUBTYPE_DIAGNOSIS>
-- <VISION_EMBEDDINGS>
-- <RESPONSE_MICROSCOPY>
+<INSTRUCTION> Write the microscopic description for this case.</INSTRUCTION>
+<FINAL_DIAGNOSIS> ... </FINAL_DIAGNOSIS>
+<CRITICAL_DIAGNOSIS> ... </CRITICAL_DIAGNOSIS>
+<VISION_EMBEDDINGS>
+<RESPONSE_MICROSCOPY> ... </RESPONSE_MICROSCOPY> 
 
-Only <RESPONSE_MICROSCOPY> tokens contribute to loss.
 
-Trainable components:
+* Visual tokens are inserted at <VISION_EMBEDDINGS>
+* Only tokens inside <RESPONSE_MICROSCOPY> contribute to the loss
+* All other tokens are masked (-100)
+
+Trainable vs Frozen components:
+
+Trainable:
 
   * projector MLP
   * LoRA adapters
 
-Frozen components:
+Frozen:
 
   * vision encoder
   * perceiver resampler
   * LLM backbone
 
+#### Key Idea
+This stage doesnot aim to generate perfect reports yet , this alignment is essential before fine-tuning the model for high-quality report generation (Stage 2-B)
+
 For implementation details see:
 
 training/train_stage2_alignment.py
 
-models/vlm_projector.py
+models/vlm_stage2.py
     
 ---
 
