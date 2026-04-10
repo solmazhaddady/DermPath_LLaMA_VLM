@@ -53,7 +53,7 @@ The proposed approach follows a two-stage design: stage 1 performs slide level c
    * Slide-level diagnosis is predicted final diagnosis (basal cell carcinoma (BCC), squamous cell carcinoma (SCC), No Malignancy)
    * Slide- level diagnosis is predicted critical (subtype cancer) diagnosis : solid,micronodular,superficial,grade1, grade2 ,......
 
-3. **Report Generation**  (*stage 2*) 
+3. **Report Generation**  VLM model  (*stage 2*) 
 
    * Aggregated visual features are combined with predicted labels and medical report 
    * A medical LLM (MMed-LLaMA-3-8B) generates pathology reports
@@ -69,7 +69,7 @@ This design separates diagnosis prediction from report generation, improving rob
 
 Whole-slide images are processed using a patch-based pipeline:
 
-* Downsampling of WSI (resolution-controlled)
+* Downsampling of WSI by factor 4 (resolution-controlled)
 * Tessellation into non-overlapping patches (e.g., 256×256 or 512×512)
 * Background filtering using RGB thresholds and edge detection (Canny)
 * Resizing patches to 224×224
