@@ -1,9 +1,16 @@
  
 """
-Stage 2-A : Vision Language Alignment Training 
-This stage extends the slide-level visual encoder into multimodal vision-language model VLM. The goal is not to generate perfect reports yet but
-to align vision and language representations. Du projector and lora , and vision part is off.
-Author :Solmaz Haddady 
+Stage 2-A: Vision–Language Alignment Training
+
+This stage extends the slide-level visual encoder into a multimodal
+vision–language model (VLM). The goal is not to generate perfect reports
+yet, but to ensure that visual features and language representations are
+properly aligned.
+
+Only the projector and LoRA adapters are trained, while the vision encoder
+and language model backbone remain frozen.
+
+Author: Solmaz Haddady
 
 """
 
@@ -145,7 +152,7 @@ def collate_pad(batch, pad_id:int):
 # -------------- Vision modules --------------  frozen 
 def build_frozen_vision(cfg, device, model_dtype):
     pos = PositionalEncoderMLP(in_dim=2, hidden=128, out_dim=768)
-    resampler = PerceiverResampler(in_dim=768, dim=1536, num_latents=640, num_layers=6, num_heads=16)   #### here still keep all  640 tokens
+    resampler = PerceiverResampler(in_dim=768, dim=1536, num_latents=640, num_layers=6, num_heads=16)   
     pos_sd = torch.load(cfg["paths"]["init_pos_encoder"], map_location="cpu")
     resampler_sd = torch.load(cfg["paths"]["init_resampler"], map_location="cpu")
     pos.load_state_dict(pos_sd, strict=True)
