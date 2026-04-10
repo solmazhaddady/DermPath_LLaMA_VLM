@@ -1,4 +1,12 @@
-# in stage1 i train LLM model with lora and vision part is off , only train projector 
+ 
+"""
+Stage 2-A : Vision Language Alignment Training 
+This stage extends the slide-level visual encoder into multimodal vision-language model VLM. The goal is not to generate perfect reports yet but
+to align vision and language representations. Du projector and lora , and vision part is off.
+Author :Solmaz Haddady 
+
+"""
+
 import os, json, math, time, random, argparse
 from pathlib import Path
 import h5py
@@ -146,7 +154,7 @@ def build_frozen_vision(cfg, device, model_dtype):
     for p in resampler.parameters(): p.requires_grad = False
     pos = pos.to(device)
     resampler = resampler.to(device)
-    # projector is trainable and should output LLM hidden size##########################################
+    # projector is trainable and should output LLM hidden size
     projector = Projector(in_dim=1536, out_dim=4096).to(device)
     # Make sure its parameters are in model dtype
     #proj = proj.to(dtype=model_dtype)
