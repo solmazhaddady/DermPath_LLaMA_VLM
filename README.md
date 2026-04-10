@@ -20,7 +20,7 @@ https://github.com/solmazhaddady/NMSC-TCIA-Dataset
 ## Contributions
 
 - Develped a two-stage vision–language pipeline for dermatopathology
-- Implemented Weakly supervised slide-level classification (MLP, Perceiver Resampler)
+- Implemented Weakly supervised slide-level classification (MLP + Perceiver Resampler)
 - Integrated pretrained CTransPath encoder for WSI feature extraction (adapted from HistoGPT)
 - Integrated visual features with a medical LLM (MMed-LLaMA-3-8B) for report generation
 - Applied parameter-efficient fine-tuning (LoRA) for large language models
