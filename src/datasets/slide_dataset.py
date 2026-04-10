@@ -1,5 +1,6 @@
 """
 Dataset used for train final diagnosis classification 
+This dataset loads pre_extrcated WSI patch features(CTransPath embeddings) from H5 files 
 Author: Solmaz Haddady
 
 """
