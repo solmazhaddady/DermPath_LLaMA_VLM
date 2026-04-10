@@ -123,7 +123,7 @@ Slide-Level Classification
 This design allows weakly supervised learning using only slide-level labels while capturing spatial context across gigapixel WSIs.
 
 Implementation details:
-See training/train_fd_classifier.py and models/perceiver.py 
+See models/perceiver.py , and  training/train_fd_classifier.py  and training/train_subtype_classifier.py
 
 ---
 
