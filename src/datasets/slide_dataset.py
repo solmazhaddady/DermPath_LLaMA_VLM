@@ -1,5 +1,5 @@
 """
-Dataset used for trainig final diagnosis classification 
+Dataset used for train final diagnosis classification 
 Author: Solmaz Haddady
 
 """
