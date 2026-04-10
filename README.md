@@ -144,7 +144,7 @@ Stage 2 extends the slide-level visual encoder into a multimodal Vision–Langua
 
 In this stage, the goal is vision–language alignment: learning how visual representations from whole-slide images correspond to textual descriptions in pathology reports.
 
-Overview
+### Overview
 
 The frozen visual encoder from Stage 1 produces a fixed set of latent latent tokens 
 L=[640,1536]. These visual tokens are projected into the hidden space of a 
@@ -153,7 +153,7 @@ causal medical LLM (4096 dimensions) using a lightweight Projector MLP.
 The projected visual tokens are then inserted into the LLM token at the special token <VISION_EMBEDDINGS> location,
 this enables joint attention between visual and textual tokens during next-token prediction.
 
-Architecture
+### Architecture
 
 The model consists of the following components:
 
@@ -172,7 +172,7 @@ The model consists of the following components:
     * Enables multimodal reasoning via causal attention
  
   
-Training (Stage 2-A: Alignment)
+### Training (Stage 2-A: Alignment)
 
 The model is trained using masked causal language modeling, focusing only on generating the microscopy description.
 
@@ -192,7 +192,7 @@ Prompt Format:
 . All other tokens are masked (-100)
 
 
-Trainable vs Frozen components:
+#### Trainable vs Frozen components:
 
 Trainable:
 
