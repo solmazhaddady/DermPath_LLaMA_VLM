@@ -1,13 +1,25 @@
-
 """
 Train Final Diagnosis Classifier (BCC, SCC, No Malignancy)
 
-This script trains a slide-level classifier using pre-extracted WSI features
-(CTransPath embeddings) and a Perceiver-based architecture.
+This script trains a weakly supervised slide-level classifier using 
+pre-extracted WSI patch features (CTransPath embeddings). Patch features 
+are aggregated using a Perceiver Resampler with positional encoding to 
+predict slide-level diagnosis.
+
+Architecture:
+- Positional MLP for spatial encoding
+- Perceiver Resampler for feature aggregation
+- Linear classification head (3 classes)
+
+Classes:
+- Basal Cell Carcinoma (BCC)
+- Squamous Cell Carcinoma (SCC)
+- No Malignancy
 
 Author: Solmaz Haddady
-Date : 03.04.2026
+Date: 03.04.2026
 """
+
 
 
 import os, math, json, random, h5py, argparse
@@ -20,7 +32,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader, random_split
 from torch.amp import autocast, GradScaler
-from training.dataset import SlideClassificationDataset
+from datasets.dataset import SlideClassificationDataset
 from training.utils import collate_pad, seed_all
 from models.perceiver import PerceiverResamplerClassifier
 
