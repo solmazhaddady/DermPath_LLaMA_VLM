@@ -1,4 +1,19 @@
-# in stage1 i train LLM model with lora and vision part is off , only train projector 
+ 
+"""
+Stage 2-A: Vision–Language Alignment Training
+
+This stage extends the slide-level visual encoder into a multimodal
+vision–language model (VLM). The goal is not to generate perfect reports
+yet, but to ensure that visual features and language representations are
+properly aligned.
+
+Only the projector and LoRA adapters are trained, while the vision encoder
+and language model backbone remain frozen.
+
+Author: Solmaz Haddady
+
+"""
+
 import os, json, math, time, random, argparse
 from pathlib import Path
 import h5py
@@ -13,7 +28,7 @@ from typing import Dict, Any, Tuple, List
 
 # ---------- Import  modules ----------
 # 
-from mm_modules import PositionalEncoderMLP, PerceiverResampler, Projector
+from models.vlm_projector import PositionalEncoderMLP, PerceiverResampler, Projector
 
 
 # ----------------- Utils -----------------
@@ -137,7 +152,7 @@ def collate_pad(batch, pad_id:int):
 # -------------- Vision modules --------------  frozen 
 def build_frozen_vision(cfg, device, model_dtype):
     pos = PositionalEncoderMLP(in_dim=2, hidden=128, out_dim=768)
-    resampler = PerceiverResampler(in_dim=768, dim=1536, num_latents=640, num_layers=6, num_heads=16)   #### here still keep all  640 tokens
+    resampler = PerceiverResampler(in_dim=768, dim=1536, num_latents=640, num_layers=6, num_heads=16)   
     pos_sd = torch.load(cfg["paths"]["init_pos_encoder"], map_location="cpu")
     resampler_sd = torch.load(cfg["paths"]["init_resampler"], map_location="cpu")
     pos.load_state_dict(pos_sd, strict=True)
@@ -146,7 +161,7 @@ def build_frozen_vision(cfg, device, model_dtype):
     for p in resampler.parameters(): p.requires_grad = False
     pos = pos.to(device)
     resampler = resampler.to(device)
-    # projector is trainable and should output LLM hidden size##########################################
+    # projector is trainable and should output LLM hidden size
     projector = Projector(in_dim=1536, out_dim=4096).to(device)
     # Make sure its parameters are in model dtype
     #proj = proj.to(dtype=model_dtype)
@@ -191,7 +206,7 @@ def build_lm(cfg, device):
     model.print_trainable_parameters()
     return tok, model
 
-########################## 
+
 
 # -------------- Forward (one batch) --------------
 def forward_batch(model, tok, batch, cfg, device, pos, resampler, projector):

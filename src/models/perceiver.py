@@ -1,9 +1,24 @@
-'''
-Model (perceiver + MLP)
+"""
+Perceiver-based Slide-Level Aggregation Model
+
+This module implements the slide-level aggregation architecture used for
+WSI classification. Patch-level CTransPath features are enriched with
+spatial positional embeddings and aggregated using a Perceiver Resampler.
+The resulting slide representation is used for classification.
+
+Components:
+- Positional MLP for (x, y) coordinate encoding
+- Perceiver Resampler for global feature aggregation
+- Mean pooling over latent tokens
+- Linear classification head (defined in training script)
+
+Used for:
+- Final diagnosis classification (BCC, SCC, No Malignancy)
+- Subtype multi-label classification (shared backbone)
+
 Author: Solmaz Haddady
+"""
 
-
-'''
 class PositionalEncoder(nn.Module):
     def __init__(self, input_dim=2, hidden_dim=128, output_dim=768):
         super().__init__()

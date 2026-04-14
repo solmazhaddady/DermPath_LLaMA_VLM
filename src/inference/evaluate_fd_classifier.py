@@ -19,7 +19,7 @@ from tqdm import tqdm
 from sklearn.metrics import classification_report, confusion_matrix
 import matplotlib.pyplot as plt
 
-from training.dataset import SlideClassificationDataset
+from datasets.slide_dataset import SlideClassificationDataset
 from training.utils import collate_pad
 from models.perceiver import PerceiverResamplerClassifier
 

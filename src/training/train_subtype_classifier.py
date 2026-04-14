@@ -1,8 +1,19 @@
 """
-Train Subtype Classifier (BCC / SCC multi-label)
+Train Subtype Classifier, (Critical Diagnosis)(BCC / SCC Multi-Label)
 
-This script trains a multi-label classifier for histopathology subtypes
-using pre-extracted WSI features (CTransPath embeddings).
+This script trains a slide-level multi-label classifier for BCC and SCC
+histopathology subtypes using pre-extracted WSI patch features 
+(CTransPath embeddings). Patch features are aggregated using a shared 
+Perceiver backbone, followed by two independent multi-label heads.
+
+Architecture:
+- Positional MLP for spatial encoding
+- Perceiver Resampler backbone (shared)
+- BCC multi-label classification head
+- SCC multi-label classification head
+
+Loss:
+- BCEWithLogitsLoss (multi-label)
 
 Author: Solmaz Haddady
 """
@@ -19,6 +30,7 @@ from torch.utils.data import Dataset, DataLoader, random_split
 from sklearn.metrics import f1_score
 
 from models.perceiver import PerceiverResampler
+from datasets.subtype_dataset import SubtypeDataset
 
 
 # ------------------------
@@ -55,64 +67,6 @@ def set_seed(seed=1337):
     torch.cuda.manual_seed_all(seed)
 
 set_seed(SEED)
-# ------------------------
-# Dataset
-# ------------------------
-class SubtypeDataset(Dataset):
-    def __init__(self, df, h5_dirs):
-        self.df = df.reset_index(drop=True)
-
-        # index h5 files
-        self.h5_map = {}
-        for d in h5_dirs:
-            if not os.path.isdir(d):
-                continue
-            for f in os.listdir(d):
-                if f.endswith(".h5"):
-                    self.h5_map[f.replace(".h5", "")] = os.path.join(d, f)
-
-        # subtype columns
-        self.bcc_cols = [c for c in df.columns if c.startswith("bcc_")]
-        self.scc_cols = [c for c in df.columns if c.startswith("scc_")]
-
-        self.samples = []
-        for _, row in df.iterrows():
-            img_id = str(row["Image_Nr"])
-            if img_id not in self.h5_map:
-                continue
-
-            fd = str(row["FINAL_Diagnosis"]).lower()
-
-            if "bcc" in fd:
-                head = "bcc"
-                labels = row[self.bcc_cols].values.astype(np.float32)
-            elif "scc" in fd:
-                head = "scc"
-                labels = row[self.scc_cols].values.astype(np.float32)
-            else:
-                continue  # skip normal slides
-
-            self.samples.append({
-                "h5": self.h5_map[img_id],
-                "head": head,
-                "labels": labels
-            })
-
-    def __len__(self):
-        return len(self.samples)
-
-    def __getitem__(self, idx):
-        import h5py
-
-        s = self.samples[idx]
-        with h5py.File(s["h5"], "r") as f:
-            feats = torch.tensor(f["feats"][:], dtype=torch.float32)
-
-        mask = torch.ones(feats.shape[0], dtype=torch.bool)
-        labels = torch.tensor(s["labels"], dtype=torch.float32)
-
-        return feats, mask, s["head"], labels
-
 
 # ------------------------
 # Collate

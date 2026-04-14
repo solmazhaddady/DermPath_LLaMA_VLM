@@ -1,8 +1,10 @@
-'''
-Dataset
+"""
+Dataset used for train final diagnosis classification 
+This dataset loads pre_extrcated WSI patch features(CTransPath embeddings) from H5 files 
 Author: Solmaz Haddady
 
-'''
+"""
+
 class SlideClassificationDataset(Dataset):
     """
     Fast version: pre-index all .h5 files, then match rows by Image_Nr.
@@ -80,3 +82,5 @@ class SlideClassificationDataset(Dataset):
         y = y / (y.max() if y.max()!=0 else 1.0)
         coords = torch.tensor(np.stack([x,y], axis=1)).float()
         return feats, coords, rec["label_idx"]
+
+

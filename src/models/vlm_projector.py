@@ -1,11 +1,16 @@
+"""
+Model : MLP + Perceiver + Projector 
+----------  Projector: 1536 -> 4096 (LLM hidden) ----------
+This module is used in Stage-2 to project vision latents to LLM hidden size.
+Author :Solmaz Haddday 
 
-# ----------  Projector: 1536 -> 4096 (LLM hidden) ----------
-# This module is used in Stage-2 to project vision latents to LLM hidden size.
+"""
+
 import torch
 import torch.nn as nn
 
 # ------------------------
-# Model (perceiver + MLP)
+# Model (perceiver + MLP+ projector )
 # ------------------------
 class PositionalEncoder(nn.Module):
     def __init__(self, input_dim=2, hidden_dim=128, output_dim=768):
@@ -102,7 +107,6 @@ class Projector(nn.Module):
         if x.dtype != target_dtype:
             x = x.to(target_dtype)
         return self.net(x)
-
 
 
 

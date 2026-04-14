@@ -14,10 +14,13 @@ but several challenges remain:
 
 This project explores how vision–language models can address these challenges.
 
+## Dataset 
+https://github.com/solmazhaddady/NMSC-TCIA-Dataset
+
 ## Contributions
 
 - Develped a two-stage vision–language pipeline for dermatopathology
-- Implemented Weakly supervised slide-level classification (MLP, Perceiver Resampler)
+- Implemented Weakly supervised slide-level classification (MLP + Perceiver Resampler)
 - Integrated pretrained CTransPath encoder for WSI feature extraction (adapted from HistoGPT)
 - Integrated visual features with a medical LLM (MMed-LLaMA-3-8B) for report generation
 - Applied parameter-efficient fine-tuning (LoRA) for large language models
@@ -34,22 +37,23 @@ WSI → Patch Extraction → CTransPath Features
 
 ## Method Overview
 
-The proposed approach follows a two-stage design:
+The proposed approach follows a two-stage design: stage 1 performs slide-level classification, while stage 2 generate medical reports using a vision-language model.
 
 1. **Feature Extraction**
 
    * Whole-slide images are divided into patches
    * Features are extracted using pretrained CTransPath encoder
 
-2. **Classification**
+2. **Classification**  (*stage 1*) 
 
    * Patch features are aggregated using:
 
      * MLP
      * Perceiver Resampler
-   * Slide-level diagnosis is predicted (BCC, SCC, No Malignancy)
+   * Slide-level diagnosis is predicted final diagnosis (basal cell carcinoma (BCC), squamous cell carcinoma (SCC), No Malignancy)
+   * Subtype-level diagnosis is predicted for BCC and SCC using multi-label classification heads.
 
-3. **Report Generation**
+3. **Report Generation**  VLM model  (*stage 2*) 
 
    * Aggregated visual features are combined with predicted labels and medical report 
    * A medical LLM (MMed-LLaMA-3-8B) generates pathology reports
@@ -65,7 +69,7 @@ This design separates diagnosis prediction from report generation, improving rob
 
 Whole-slide images are processed using a patch-based pipeline:
 
-* Downsampling of WSI (resolution-controlled)
+* Downsampling of WSI by factor 4 (resolution-controlled)
 * Tessellation into non-overlapping patches (e.g., 256×256 or 512×512)
 * Background filtering using RGB thresholds and edge detection (Canny)
 * Resizing patches to 224×224
@@ -73,8 +77,11 @@ Whole-slide images are processed using a patch-based pipeline:
 
 Patch-level features are extracted using a pretrained CTransPath encoder and stored as slide-level embeddings (HDF5 format).
 
+details :  feature_extraction/extract_features.py
+
 **Implementation:**
 Adapted from the HistoGPT framework (Helmholtz Munich).
+
 
 **Reference:**
 Tran et al. (2025) *Generating dermatopathology reports from gigapixel whole slide images with HistoGPT*
@@ -91,41 +98,256 @@ Positional Encoding
 
 * Spatial coordinates of each tile are normalized to [0,1]
 * Coordinates (x,y) are projected to 768-dimensional embeddings using an MLP
-* This injects spatial context into patch-level visual features
+* The positionmal embeddings are added to CTransPath visual features
+* This injects spatial context into patch-level representations
 
 Perceiver Resampler
 
 * Position-aware features are compressed using a Perceiver Resampler
 * The variable-length patch sequence is mapped to a fixed number of latent tokens
-* Latent size: L = 640, dimension D = 1536
+* Number of Latents: L = 640, Latent dimension : D = 1536
 * Cross-attention layers aggregate global slide-level context
 
-Slide-Level Classification
+#### Slide-Level Classification * final diagnosis *
 
 * Latent tokens are mean-pooled to obtain a slide representation
 * A LayerNorm + Linear layer predicts final diagnosis:
+* Classes :
      - Basal Cell Carcinoma (BCC)
      - Squamous Cell Carcinoma (SCC)
      - No Malignancy
+       
+*Cross-entropy loss is used for training.*
 
-#### Subtype Prediction
+#### Subtype Prediction 
 
-* The same Perceiver backbone is reused
+* to predict cancer subtype, the same Perceiver backbone is reused.
 * Two independent multi-label heads are attached:
    - BCC subtype head
    - SCC subtype head
-* Sigmoid activation enables multi-label prediction
+* Each heads predicts multiple subtype labels using sigmoid activation.
+* Binary cross-entropy loss (BCEWithLogitsLoss) is used for multi-label training.
 
-This design allows weakly supervised learning using only slide-level labels while capturing spatial context across gigapixel WSIs.
+This design enables weakly supervised learning using only slide-level labels while capturing spatial context across gigapixel WSIs.
 
-Implementation details:
-See training/train_fd.py and models/perceiver.py 
+For additional implementation details, please refer to the training scripts and model definitions.
+
+-Model architecture : models/perceiver.py 
+
+-Classification training scripts : training/train_fd_classifier.py , training/train_subtype_classifier.py
 
 ---
 
-## VLM  (* to be added * )
+## Vision–Language Model (Stage-2A: Alignment)
+
+Stage 2 extends the slide-level visual encoder into a multimodal Vision–Language Model (VLM) capable of generating microscopic pathology descriptions.
+
+In this stage, the goal is vision–language alignment: learning how visual representations from whole-slide images correspond to textual descriptions in pathology reports.
+
+### Overview
+
+The frozen visual encoder from Stage 1 produces a fixed set of latent latent tokens 
+L=[640,1536]. These visual tokens are projected into the hidden space of a 
+causal medical LLM (4096 dimensions) using a lightweight Projector MLP.
+
+The projected visual tokens are then inserted into the LLM token at the special token <VISION_EMBEDDINGS> location,
+this enables joint attention between visual and textual tokens during next-token prediction.
+
+### Architecture
+
+The model consists of the following components:
+
+* Frozen Visual Encoder (Stage 1)
+    * Positional MLP
+    *  Perceiver Resampler (L = 640, D = 1536)
+* Projector MLP
+    * Maps visual tokens: 1536 → 4096
+* Language Model
+   * MMed-LLaMA-3-8B (causal LLM)
+* LoRA Adapters
+    * Rank = 8
+    * Applied to attention layers (q, k, v, o)
+* Fusion Mechanism
+    * Visual tokens are injected into the LLM token stream
+    * Enables multimodal reasoning via causal attention
+ 
+  
+### Training (Stage 2-A: Alignment)
+
+The model is trained using masked causal language modeling, focusing only on generating the microscopy description.
+
+Prompt Format:
+
+- < INSTRUCTION > Write the microscopic description for this case. </ INSTRUCTION >
+- < FINAL_DIAGNOSIS > ... </FINAL_DIAGNOSIS>
+- < CRITICAL_DIAGNOSIS> ... </CRITICAL_DIAGNOSIS>
+- < VISION_EMBEDDINGS >
+- < RESPONSE_MICROSCOPY> ... </RESPONSE_MICROSCOPY>
+
+  
+. Visual tokens are inserted at <VISION_EMBEDDINGS>
+
+. Only tokens inside <RESPONSE_MICROSCOPY> contribute to the loss
+
+. All other tokens are masked (-100)
 
 
+#### Trainable vs Frozen components:
+
+Trainable:
+
+  * projector MLP
+  * LoRA adapters
+
+Frozen:
+
+  * vision encoder
+  * perceiver resampler
+  * LLM backbone
+
+#### Key Idea
+This stage doesnot aim to generate perfect reports yet , this alignment is essential before fine-tuning the model for high-quality report generation (Stage 2-B)
+
+For implementation details see:
+
+training/train_stage2_alignment.py
+
+models/vlm_stage2.py
+    
+---
+
+## Stage 2B — Vision–Language Report Generation
+
+Stage 2B extends the aligned multimodal interface from Stage 2A to full microscopy report generation.
+The model learns to generate clinically meaningful microscopic descriptions conditioned on:
+
+. predicted diagnostic labels
+. slide-level visual representations
+. structured dermatopathology prompts
+
+Unlike Stage 2A (alignment), Stage 2B trains the system to produce complete reports.
+
+### Overview
+
+Pipeline:
+
+ WSI → CTransPath → Perceiver → VisionCompressor → Projector → LLM (LoRA)
+                                                ↓
+                                          Microscopy Report
+
+Stage 2B introduces:
+
+* VisionCompressor (reduces token length)
+* generation stability curriculum
+* structured supervision for report writing
+* LoRA-based training with frozen 8B LLM
+
+### Architecture
+Frozen Vision Encoder
+
+Slide features are extracted using CTransPath and processed by the Perceiver Resampler:
+
+F → Perceiver → Z ∈ R[640 × 1536]
+
+Weights are warm-started from Stage 1 and Stage 2A.
+### VisionCompressor (640 → K′)
+
+To stabilize long-sequence generation, we compress the Perceiver tokens:
+Z' = Compressor(Z)
+Default:
+K' = 256
+
+This reduces memory usage and improves optimization stability while preserving slide-level information.
+
+Other tested values:  K' = 64, 128, 256, 640 
+
+** 256 provided the best trade-off between stability and visual fidelity. **
+
+### Projector
+
+Compressed vision tokens are mapped to the LLM hidden dimension:  1536 → 4096 
+
+This enables direct fusion with the language model.
+
+### Vision–Language Fusion
+
+Vision tokens are inserted into the prompt:   <VISION_EMBEDDINGS>
+
+The LLM then autoregressively generates:  <RESPONSE_MICROSCOPY>
+
+### Language Model
+
+Backbone:
+
+* MMed-LLaMA-3-8B
+* 4-bit quantization (NF4)
+* frozen weights
+
+Trainable components:
+
+* LoRA adapters (rank 8)
+* VisionCompressor
+* Projector
+* late-unfrozen Perceiver layers
+
+Training setup:
+
+* AdamW
+* cosine decay
+* gradient accumulation = 12
+* 4-bit QLoRA
+* BF16 / TF32 mixed precision
+
+
+#### Prompt Format
+
+Generation is conditioned using a structured dermatopathology prompt:
+
+< INSTRUCTION >
+As an expert dermatopathologist, write a concise,
+factual report for this slide.
+First restate the final and critical diagnosis,
+then provide a precise microscopic description, without speculation.
+avoid extra tags and avoid repeating content. </ INSTRUCTION >
+
+<FINAL_DIAGNOSIS>...</FINAL_DIAGNOSIS>
+
+<CRITICAL_DIAGNOSIS>...</CRITICAL_DIAGNOSIS>
+
+<VISION_EMBEDDINGS>
+
+<RESPONSE_MICROSCOPY>
+
+Only the <RESPONSE_MICROSCOPY> tokens are used for loss computation.
+
+## Token Compression Study
+
+We compared:
+
+| tokens | stability      | memory   | convergence     |
+| ------ | -------------- | -------- | --------------- |
+| 640    | unstable       | high     | slow            |
+| 256    | best           | moderate | fast            |
+| 128    | good           | low      | slightly weaker |
+| 64     | too compressed | very low | degraded        |
+
+
+Default: K′ = 256
+
+**Researchers can adjust this parameter depending on memory budget.**
+
+### What Stage 2B Learns
+
+Stage 2B enables the model to:
+
+* generate dermatopathology microscopy descriptions
+* ground language in WSI features
+* condition on diagnosis labels
+* produce structured clinical text
+* avoid hallucinations via controlled prompting
+
+ ---
+ 
 ## Results
 1. Main Classification Results
 Slide-level Diagnosis (3 Classes)
