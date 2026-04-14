@@ -28,7 +28,7 @@ from typing import Dict, Any, Tuple, List
 
 # ---------- Import  modules ----------
 # 
-from models.vlm_projector import PositionalEncoderMLP, PerceiverResampler, Projector
+from models.perceiver_projector import PositionalEncoderMLP, PerceiverResampler, Projector
 
 
 # ----------------- Utils -----------------
