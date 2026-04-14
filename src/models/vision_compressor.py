@@ -1,4 +1,4 @@
-# mm_modules_stage2.py
+#vision_compressor.py
 import torch
 import torch.nn as nn
 
