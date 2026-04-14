@@ -1,6 +1,6 @@
  
 """
-Stage 2-A: Vision–Language Alignment Training
+Stage 2A: Vision–Language Alignment Training
 
 This stage extends the slide-level visual encoder into a multimodal
 vision–language model (VLM). The goal is not to generate perfect reports
