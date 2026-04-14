@@ -77,7 +77,7 @@ Whole-slide images are processed using a patch-based pipeline:
 
 Patch-level features are extracted using a pretrained CTransPath encoder and stored as slide-level embeddings (HDF5 format).
 
-details :  feature_extraction/extract_features.py
+details :  src/feature_extraction/extract_features.py
 
 **Implementation:**
 Adapted from the HistoGPT framework (Helmholtz Munich).
@@ -132,9 +132,9 @@ This design enables weakly supervised learning using only slide-level labels whi
 
 For additional implementation details, please refer to the training scripts and model definitions.
 
--Model architecture : models/perceiver.py 
+-Model architecture : src/models/perceiver.py 
 
--Classification training scripts : training/train_fd_classifier.py , training/train_subtype_classifier.py
+-Classification training scripts : src/training/train_fd_classifier.py , src/training/train_subtype_classifier.py
 
 ---
 
@@ -210,9 +210,9 @@ This stage doesnot aim to generate perfect reports yet , this alignment is essen
 
 For implementation details see:
 
-training/train_stage2_alignment.py
+src/training/train_stage2a_alignment.py
 
-models/vlm_stage2.py
+src/models/perceiver_projector.py  
     
 ---
 
@@ -345,6 +345,12 @@ Stage 2B enables the model to:
 * condition on diagnosis labels
 * produce structured clinical text
 * avoid hallucinations via controlled prompting
+
+For implementation details see:
+
+src/training/train_stage2b_generation.py
+
+src/models/vision_compressor.py  
 
  ---
  
