@@ -1,9 +1,18 @@
 """
 Model : MLP + Perceiver + Projector 
 ----------  Projector: 1536 -> 4096 (LLM hidden) ----------
-This module is used in Stage-2 to project vision latents to LLM hidden size.
-Author :Solmaz Haddday 
+Stage 1 / Stage 2A / Stage 2B
+Perceiver Resampler + Vision Projector
 
+Components:
+- PositionalEncoder
+- PerceiverAttention
+- PerceiverResampler (640 latents)
+- Projector (1536 -> 4096)
+
+Used to convert slide features into LLM-compatible vision tokens.
+
+Author: Solmaz Haddady
 """
 
 import torch
@@ -97,7 +106,7 @@ class Projector(nn.Module):
             nn.GELU(),
         ]
         if dropout and dropout > 0.0:
-            layers.append(nn.Dropout(dropout))  # becomes net.2 only if used
+            layers.append(nn.Dropout(dropout))  
         layers.append(nn.Linear(hidden, out_dim, bias=True))
         self.net = nn.Sequential(*layers)
 
