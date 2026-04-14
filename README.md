@@ -304,9 +304,11 @@ Training setup:
 Generation is conditioned using a structured dermatopathology prompt:
 
 < INSTRUCTION >
-Write a concise microscopic report.
-Restate diagnosis and describe histologic findings.
-Avoid speculation.
+As an expert dermatopathologist, write a concise,
+factual report for this slide.
+First restate the final and critical diagnosis,
+then provide a precise microscopic description, without speculation.
+avoid extra tags and avoid repeating content
 </INSTRUCTION>
 
 <FINAL_DIAGNOSIS>...</FINAL_DIAGNOSIS>
