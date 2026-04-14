@@ -260,9 +260,91 @@ K' = 256
 This reduces memory usage and improves optimization stability while preserving slide-level information.
 
 Other tested values:  K' = 64, 128, 256, 640 
+
 ** 256 provided the best trade-off between stability and visual fidelity. **
 
+Projector
 
+Compressed vision tokens are mapped to the LLM hidden dimension:  1536 → 4096 
+
+This enables direct fusion with the language model.
+
+### Vision–Language Fusion
+
+Vision tokens are inserted into the prompt:   <VISION_EMBEDDINGS>
+
+The LLM then autoregressively generates:  <RESPONSE_MICROSCOPY>
+
+Language Model
+
+Backbone:
+
+* MMed-LLaMA-3-8B
+* 4-bit quantization (NF4)
+* frozen weights
+
+Trainable components:
+
+* LoRA adapters (rank 8)
+* VisionCompressor
+* Projector
+* late-unfrozen Perceiver layers
+
+Training setup:
+
+* AdamW
+* cosine decay
+* gradient accumulation = 12
+* 4-bit QLoRA
+* BF16 / TF32 mixed precision
+
+
+Prompt Format
+
+Generation is conditioned using a structured dermatopathology prompt:
+
+
+< INSTRUCTION >
+Write a concise microscopic report.
+Restate diagnosis and describe histologic findings.
+Avoid speculation.
+</INSTRUCTION>
+
+<FINAL_DIAGNOSIS>...</FINAL_DIAGNOSIS>
+<CRITICAL_DIAGNOSIS>...</CRITICAL_DIAGNOSIS>
+
+<VISION_EMBEDDINGS>
+
+<RESPONSE_MICROSCOPY>
+
+Only the <RESPONSE_MICROSCOPY> tokens are used for loss computation.
+
+
+## Token Compression Study
+
+We compared:
+
+| tokens | stability      | memory   | convergence     |
+| ------ | -------------- | -------- | --------------- |
+| 640    | unstable       | high     | slow            |
+| 256    | best           | moderate | fast            |
+| 128    | good           | low      | slightly weaker |
+| 64     | too compressed | very low | degraded        |
+
+
+Default: K′ = 256
+
+**Researchers can adjust this parameter depending on memory budget.**
+
+### What Stage 2B Learns
+
+Stage 2B enables the model to:
+
+* generate dermatopathology microscopy descriptions
+* ground language in WSI features
+* condition on diagnosis labels
+* produce structured clinical text
+* avoid hallucinations via controlled prompting
 
  ---
  
