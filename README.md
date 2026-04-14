@@ -308,9 +308,7 @@ As an expert dermatopathologist, write a concise,
 factual report for this slide.
 First restate the final and critical diagnosis,
 then provide a precise microscopic description, without speculation.
-avoid extra tags and avoid repeating content
-
-</INSTRUCTION>
+avoid extra tags and avoid repeating content. </ INSTRUCTION >
 
 <FINAL_DIAGNOSIS>...</FINAL_DIAGNOSIS>
 
