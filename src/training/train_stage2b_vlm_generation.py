@@ -1,14 +1,23 @@
-# train_stage2_vlm_generataion.py
-# -----------------------------------------------------------
-# Stage-2 (report generation) with quality + stability upgrades:
-# - Vision scale ramp (curriculum): vision_scale -> vision_scale_max by 50% of training
-# - Vision token dropout (robustness)
-# - Anchor loss on first tokens of the RESPONSE span (cleaner openings)
-# - Late unfreeze of last Perceiver layers (tiny LR)
-# - Safer token budgeting (configurable MIN_RESP)
-# - k' (k_prime) support as before + optional schedule (slice)
-# - Fixed evaluate() call signature for gate_list
-# -----------------------------------------------------------
+"""
+Stage 2B — Vision–Language Report Generation Training
+
+This script trains the multimodal model to generate dermatopathology
+microscopy reports from whole slide images.
+
+Key features:
+- Vision scale curriculum (stabilizes early training)
+- Vision token dropout (improves robustness)
+- Anchor loss (better report openings)
+- Late unfreezing of Perceiver layers
+- Vision token compression (K')
+- LoRA-based training with frozen LLM
+
+Outputs:
+- Trained LoRA adapters
+- VisionCompressor + Projector weights
+
+Author: Solmaz Haddady
+"""
 
 import os, math, json, h5py, argparse, numpy as np
 from pathlib import Path
