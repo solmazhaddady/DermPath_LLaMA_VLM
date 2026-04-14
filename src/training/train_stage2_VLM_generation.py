@@ -1,4 +1,4 @@
-# train_stage2_improved.py
+# train_stage2_vlm_generataion.py
 # -----------------------------------------------------------
 # Stage-2 (report generation) with quality + stability upgrades:
 # - Vision scale ramp (curriculum): vision_scale -> vision_scale_max by 50% of training
@@ -24,8 +24,8 @@ from transformers import (
 from peft import LoraConfig, TaskType, get_peft_model
 
 
-from mm_modules_LLM import PositionalEncoderMLP, PerceiverResampler, Projector
-from mm_modules_stage2_LLM import VisionCompressor, VisionAuxHead
+from models.perceiver_projector import PositionalEncoderMLP, PerceiverResampler, Projector
+from models.vision_compressor import VisionCompressor, VisionAuxHead
 
 
 # -------------------- utils --------------------
