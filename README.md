@@ -263,7 +263,7 @@ Other tested values:  K' = 64, 128, 256, 640
 
 ** 256 provided the best trade-off between stability and visual fidelity. **
 
-Projector
+### Projector
 
 Compressed vision tokens are mapped to the LLM hidden dimension:  1536 → 4096 
 
@@ -275,7 +275,7 @@ Vision tokens are inserted into the prompt:   <VISION_EMBEDDINGS>
 
 The LLM then autoregressively generates:  <RESPONSE_MICROSCOPY>
 
-Language Model
+### Language Model
 
 Backbone:
 
@@ -299,10 +299,9 @@ Training setup:
 * BF16 / TF32 mixed precision
 
 
-Prompt Format
+#### Prompt Format
 
 Generation is conditioned using a structured dermatopathology prompt:
-
 
 < INSTRUCTION >
 Write a concise microscopic report.
@@ -318,7 +317,6 @@ Avoid speculation.
 <RESPONSE_MICROSCOPY>
 
 Only the <RESPONSE_MICROSCOPY> tokens are used for loss computation.
-
 
 ## Token Compression Study
 
