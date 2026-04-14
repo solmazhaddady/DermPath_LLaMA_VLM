@@ -1,4 +1,17 @@
 #vision_compressor.py
+"""
+Stage 2B — Vision Token Compression
+
+Components:
+- VisionCompressor (640 -> K')
+- VisionAuxHead (optional stabilization)
+
+Used to reduce Perceiver tokens for stable report generation.
+
+Author: Solmaz Haddady
+
+"""
+
 import torch
 import torch.nn as nn
 
@@ -25,7 +38,7 @@ class VisionCompressor(nn.Module):
         return out  # [B, K', D]
 
 
-class VisionAuxHead(nn.Module):
+class VisionAuxHead(nn.Module):   
     """
     Optional: tiny aux head to keep the compressed tokens semantically grounded.
     Mean-pool over K' and predict a small label set ( FD or CD).
