@@ -216,8 +216,54 @@ models/vlm_stage2.py
     
 ---
 
- VLM Report generation  * to be added *
- 
+## Stage 2B — Vision–Language Report Generation
+
+Stage 2B extends the aligned multimodal interface from Stage 2A to full microscopy report generation.
+The model learns to generate clinically meaningful microscopic descriptions conditioned on:
+
+. predicted diagnostic labels
+. slide-level visual representations
+. structured dermatopathology prompts
+
+Unlike Stage 2A (alignment), Stage 2B trains the system to produce complete reports.
+
+### Overview
+
+Pipeline:
+
+ WSI → CTransPath → Perceiver → VisionCompressor → Projector → LLM (LoRA)
+                                                ↓
+                                          Microscopy Report
+
+Stage 2B introduces:
+
+* VisionCompressor (reduces token length)
+* generation stability curriculum
+* structured supervision for report writing
+* LoRA-based training with frozen 8B LLM
+
+### Architecture
+Frozen Vision Encoder
+
+Slide features are extracted using CTransPath and processed by the Perceiver Resampler:
+
+F → Perceiver → Z ∈ R[640 × 1536]
+
+Weights are warm-started from Stage 1 and Stage 2A.
+### VisionCompressor (640 → K′)
+
+To stabilize long-sequence generation, we compress the Perceiver tokens:
+Z' = Compressor(Z)
+Default:
+K' = 256
+
+This reduces memory usage and improves optimization stability while preserving slide-level information.
+
+Other tested values:  K' = 64, 128, 256, 640 
+** 256 provided the best trade-off between stability and visual fidelity. **
+
+
+
  ---
  
 ## Results
