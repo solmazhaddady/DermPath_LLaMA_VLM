@@ -613,9 +613,8 @@ Due to differences in subtype definitions and multi-label ground truth, results 
 
 ![Comparison with HistoGPT-M ](results/hgpt_bcc_top1_rownorm.png)
 
-
+---
 ## Disclaimer
-
 This model is intended for research purposes only and is not approved for clinical use.
 
 
