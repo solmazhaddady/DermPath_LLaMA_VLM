@@ -1,5 +1,10 @@
 # DermPath_LLaMA
-Vision-language model for automated histopathology report generation from whole-slide images (WSI)
+Vision-language model for automated histopathology report generation from whole-slide images (WSI) of skin cancer .
+
+This project focuses on histopathological analysis of skin lesions, including:
+- Basal Cell Carcinoma (BCC)
+- Squamous Cell Carcinoma (SCC)
+- Tumor-free tissue
 
 ## Background
 
@@ -12,7 +17,7 @@ but several challenges remain:
 - Subjective labeling variability 
 - Time-consuming report writing for pathologists
 
-This project explores how vision–language models can address these challenges.
+This project explores how vision–language models can address these challenges in the context of skin cancer diagnosis and reporting.
 
 ## Dataset 
 https://github.com/solmazhaddady/NMSC-TCIA-Dataset
@@ -607,6 +612,11 @@ Since HistoGPT generates free-text reports, subtype labels were extracted from t
 Due to differences in subtype definitions and multi-label ground truth, results should be interpreted with caution.
 
 ![Comparison with HistoGPT-M ](results/hgpt_bcc_top1_rownorm.png)
+
+
+## Disclaimer
+
+This model is intended for research purposes only and is not approved for clinical use.
 
 
 
