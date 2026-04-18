@@ -120,7 +120,7 @@ Perceiver Resampler
 * Classes :
      - Basal Cell Carcinoma (BCC)
      - Squamous Cell Carcinoma (SCC)
-     - No Malignancy
+     - Non-malignant
        
 *Cross-entropy loss is used for training.*
 
